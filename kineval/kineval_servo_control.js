@@ -1,0 +1,95 @@
+
+/*-- |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/|
+
+    KinEval | Kinematic Evaluator | arm servo control
+
+    Implementation of robot kinematics, control, decision making, and dynamics 
+        in HTML5/JavaScript and threejs
+     
+    @author ohseejay / https://github.com/ohseejay / https://bitbucket.org/ohseejay
+
+    Chad Jenkins
+    Laboratory for Perception RObotics and Grounded REasoning Systems
+    University of Michigan
+
+    License: Creative Commons 3.0 BY-SA
+
+|\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| |\/| --*/
+
+kineval.setpointDanceSequence = function execute_setpoints() {
+
+    // if update not requested, exit routine
+    if (!kineval.params.update_pd_dance) return; 
+    if (typeof setpointArr === "undefined") {
+        if (robot.name === "fetch") {
+            setpointArr = 
+            [{"torso_lift_joint":0,"shoulder_pan_joint":0,"shoulder_lift_joint":0,"upperarm_roll_joint":0,"elbow_flex_joint":0,"forearm_roll_joint":0,"wrist_flex_joint":0,"wrist_roll_joint":0,"gripper_axis":0,"head_pan_joint":0,"head_tilt_joint":0,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.04,"l_gripper_finger_joint":0.04,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.4,"shoulder_pan_joint":2.955060753649508e-82,"shoulder_lift_joint":-0.3900000000000002,"upperarm_roll_joint":-2.3965377811468905e-82,"elbow_flex_joint":-1.0000000000000006,"forearm_roll_joint":7.788039556889484e-84,"wrist_flex_joint":-2.06,"wrist_roll_joint":-1.400000000000001,"gripper_axis":0,"head_pan_joint":1.203274212304537e-86,"head_tilt_joint":1.1113042088162903e-86,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.039999999999999966,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.4,"shoulder_pan_joint":3.19361658557442e-125,"shoulder_lift_joint":0.22999999999999998,"upperarm_roll_joint":-2.5900052296299434e-125,"elbow_flex_joint":1.7000000000000012,"forearm_roll_joint":8.416751590394514e-127,"wrist_flex_joint":1.1600000000000008,"wrist_roll_joint":1.360000000000001,"gripper_axis":0,"head_pan_joint":1.3004120056292921e-129,"head_tilt_joint":1.2010174574283274e-129,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.05,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.15002221331469018,"shoulder_pan_joint":0.5900000000000003,"shoulder_lift_joint":-0.43998722734405493,"upperarm_roll_joint":0.49000000000000027,"elbow_flex_joint":0.4000944065874266,"forearm_roll_joint":0.5400000000000003,"wrist_flex_joint":0.7300644186125939,"wrist_roll_joint":0.7700755252699402,"gripper_axis":0,"head_pan_joint":3.0419882324154563e-101,"head_tilt_joint":2.8094795777085422e-101,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.040000555332867234,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.00004046423224949481,"shoulder_pan_joint":-0.9798408642527022,"shoulder_lift_joint":-0.5301186740613989,"upperarm_roll_joint":0.7401321635867398,"elbow_flex_joint":-1.0398920858942681,"forearm_roll_joint":0.4801456496670192,"wrist_flex_joint":-1.029803085852828,"wrist_roll_joint":1.1102077060071025,"gripper_axis":0,"head_pan_joint":8.204899502348303e-105,"head_tilt_joint":7.577773425735695e-105,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.040000000149785275,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.20000000469815263,"shoulder_pan_joint":0.32988623429576946,"shoulder_lift_joint":0.2899384498784644,"upperarm_roll_joint":0.7900859340122326,"elbow_flex_joint":0.8498792619701921,"forearm_roll_joint":0.8800557479382225,"wrist_flex_joint":0.43988043336672833,"wrist_roll_joint":0.710128902116787,"gripper_axis":0,"head_pan_joint":9.526405808135096e-109,"head_tilt_joint":8.798272880124763e-109,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.0400000000000174,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.20000000000000015,"shoulder_pan_joint":-0.7500000000000003,"shoulder_lift_joint":0.40000000000000035,"upperarm_roll_joint":1.7300000000000017,"elbow_flex_joint":-0.5599999999999999,"forearm_roll_joint":0.6200000000000008,"wrist_flex_joint":-0.5500000000000001,"wrist_roll_joint":0.6100000000000006,"gripper_axis":0,"head_pan_joint":4.468581891683632e-124,"head_tilt_joint":4.127034231172777e-124,"torso_fixed_joint":0,"r_wheel_joint":0,"l_wheel_joint":0,"r_gripper_finger_joint":0.040000000000000035,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":0,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.16,"shoulder_pan_joint":-8.71007151651282e-43,"shoulder_lift_joint":0.5900000000000003,"upperarm_roll_joint":6.579235802478103e-43,"elbow_flex_joint":-1.1500000000000008,"forearm_roll_joint":4.2681450792086724e-43,"wrist_flex_joint":1.1600000000000008,"wrist_roll_joint":1.400000000000001,"gripper_axis":0,"head_pan_joint":4.069648786485371e-144,"head_tilt_joint":3.758592828282663e-144,"torso_fixed_joint":0,"r_wheel_joint":6.34572307044246e-181,"l_wheel_joint":6.34572307044246e-181,"r_gripper_finger_joint":0.05,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":4.7527209327800646e-182,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.18000000405846972,"shoulder_pan_joint":-2.2093475848453766e-50,"shoulder_lift_joint":-0.4599999850343932,"upperarm_roll_joint":1.6688518231768576e-50,"elbow_flex_joint":1.2099999708297497,"forearm_roll_joint":1.0826335931504161e-50,"wrist_flex_joint":-1.1299999705760954,"wrist_roll_joint":1.500000035511611,"gripper_axis":0,"head_pan_joint":1.0322841437690225e-151,"head_tilt_joint":9.533834448822172e-152,"torso_fixed_joint":0,"r_wheel_joint":1.6096203014177656e-188,"l_wheel_joint":1.6096203014177656e-188,"r_gripper_finger_joint":0.05,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":1.2055483694220763e-189,"bellows_joint2":0,"estop_joint":0,"laser_joint":0},{"torso_lift_joint":0.23000008724465265,"shoulder_pan_joint":-1.0708542116817507e-56,"shoulder_lift_joint":-0.09000022295854437,"upperarm_roll_joint":1.6400000000000012,"elbow_flex_joint":5.864779149218913e-7,"forearm_roll_joint":1.5300000000000011,"wrist_flex_joint":-5.47702514530485e-7,"wrist_roll_joint":1.6200007270387735,"gripper_axis":0,"head_pan_joint":5.003403858178847e-158,"head_tilt_joint":4.6209780855791865e-158,"torso_fixed_joint":0,"r_wheel_joint":7.801708933464602e-195,"l_wheel_joint":7.801708933464602e-195,"r_gripper_finger_joint":0.040000004846925036,"l_gripper_finger_joint":0.039999999999999966,"bellows_joint":5.843202570916638e-196,"bellows_joint2":0,"estop_joint":0,"laser_joint":0}];
+        }
+        /*
+        else if (robot.name === "baxter") {
+            setpointArr = 
+            [{"torso_t0":0,"headpan":0,"headnod":0,"display_joint":0,"right_torso_arm_mount":0,"right_s0":0,"right_s1":0,"right_e0":0,"right_e1":0,"right_w0":0,"right_w1":0,"right_w2":0,"left_torso_arm_mount":0,"left_s0":0,"left_s1":0,"left_e0":0,"left_e1":0,"left_w0":0,"left_w1":0,"left_w2":0},{"torso_t0":0.14999999999999997,"headpan":0.5900000000000003,"headnod":0.25000000000000005,"display_joint":0,"right_torso_arm_mount":0,"right_s0":0.5700000000000003,"right_s1":0.48000000000000026,"right_e0":0.8800000000000006,"right_e1":0.7100000000000004,"right_w0":0.8500000000000005,"right_w1":0.7700000000000005,"right_w2":0.7400000000000004,"left_torso_arm_mount":0,"left_s0":0.49000000000000027,"left_s1":0.46000000000000024,"left_e0":0.6500000000000003,"left_e1":0.5900000000000003,"left_w0":0.7100000000000004,"left_w1":0.6100000000000003,"left_w2":0.6400000000000003},{"torso_t0":0.000004918761741542406,"headpan":-0.5999806528704836,"headnod":0.00000819793623590401,"display_joint":0,"right_torso_arm_mount":0,"right_s0":-0.6299813087053825,"right_s1":0.8500157400375735,"right_e0":0.7100288567355508,"right_e1":-0.05,"right_w0":-0.23997212701679793,"right_w1":-0.21997475035639347,"right_w2":0.04002426589125827,"left_torso_arm_mount":-0.22000000000000008,"left_s0":-1.4199839320449787,"left_s1":0.47001508420267435,"left_e0":-0.3099786853657868,"left_e1":0.000019347129516733472,"left_w0":-0.4799767178610903,"left_w1":0.5400200029644159,"left_w2":-0.5699790132832364},{"torso_t0":0.04,"headpan":-1.6016324366530853e-39,"headnod":2.9513806133180604e-44,"display_joint":0,"right_torso_arm_mount":0,"right_s0":0.18999999999999995,"right_s1":2.2691346262581535e-39,"right_e0":0.2700000000000001,"right_e1":0.5600000000000003,"right_w0":0.9800000000000006,"right_w1":1.310000000000001,"right_w2":1.0700000000000007,"left_torso_arm_mount":-5.8729076605303854e-40,"left_s0":-3.7906370974641346e-39,"left_s1":-0.8800000000000006,"left_e0":2.9841799387800014,"left_e1":1.1600000000000008,"left_w0":0.04000000000000009,"left_w1":0.7500000000000004,"left_w2":0.12999999999999998},{"torso_t0":0.09000000011752461,"headpan":0.010000000462177654,"headnod":0.010000000195837983,"display_joint":0,"right_torso_arm_mount":0.08,"right_s0":-0.000004908088565136412,"right_s1":-1.020011113288549,"right_e0":3.05417993878,"right_e1":1.0000000000000006,"right_w0":0.7000000006663845,"right_w1":1.1000000006038965,"right_w2":5.80264379263517e-10,"left_torso_arm_mount":-3.205130391559274e-52,"left_s0":-0.33999999961615773,"left_s1":0.44000000035986186,"left_e0":-0.6899999994891931,"left_e1":0.7900000000000005,"left_w0":-0.999999999443799,"left_w1":0.6200000004782543,"left_w2":0.5600000005014165},{"torso_t0":0.040029494057570454,"headpan":0.020116009959773584,"headnod":0.0000491567626174181,"display_joint":0,"right_torso_arm_mount":1.846977563626091e-22,"right_s0":-0.08988792258123601,"right_s1":-1.5499056190157707,"right_e0":-2.7898269681955674,"right_e1":1.0300000000000007,"right_w0":-0.9698328670071029,"right_w1":0.39015140282886057,"right_w2":0.07014550401734781,"left_torso_arm_mount":0.1099999999999987,"left_s0":0.0000963472547218041,"left_s1":-1.2399095515567821,"left_e0":2.8701278075827865,"left_e1":1.410000000000001,"left_w0":1.3901396052058316,"left_w1":-0.4398800574992106,"left_w2":0.00012584131229724594},{"torso_t0":0.030000000063739505,"headpan":0.029999999996251254,"headnod":1.119918182074477e-19,"display_joint":7.498716593165787e-11,"right_torso_arm_mount":3.575028453964638e-27,"right_s0":0.9800000001762203,"right_s1":1.7246695055698908e-10,"right_e0":2.774491426582116e-10,"right_e1":4.124317592304886e-10,"right_w0":2.399567214512242e-10,"right_w1":1.5747393732227496e-10,"right_w2":1.5980959860547252e-16,"left_torso_arm_mount":0.04000000000000058,"left_s0":-0.9000000001387269,"left_s1":2.2870803125694288e-10,"left_e0":1.2963299971018614e-9,"left_e1":2.062227586432846e-10,"left_w0":-1.1469287029247066e-9,"left_w1":-4.31177206267562e-10,"left_w2":2.99948666593622e-11},{"torso_t0":0.17000024323506146,"headpan":-0.009999877767155602,"headnod":2.986959616783361e-10,"display_joint":0.20000000000000004,"right_torso_arm_mount":9.535040855452154e-18,"right_s0":0.4699994538053784,"right_s1":0.45999058215954674,"right_e0":0.7399830479063013,"right_e1":1.1000062586879801,"right_w0":0.6399941069113531,"right_w1":0.42000237071446156,"right_w2":4.262318668000342e-7,"left_torso_arm_mount":6.68403570618124e-7,"left_s0":-0.3699999994145561,"left_s1":0.6099924658184412,"left_e0":-1.0499825599665941,"left_e1":0.5500085677184965,"left_w0":-3.059,"left_w1":-1.150002672885465,"left_w2":0.08000000076466172},{"torso_t0":0.17000024323506135,"headpan":-0.009999877767155593,"headnod":2.9869596167833634e-10,"display_joint":0.1999999999999999,"right_torso_arm_mount":9.53504085545216e-18,"right_s0":0.4699994538053781,"right_s1":0.45999058215954647,"right_e0":2.7199830479062865,"right_e1":1.100006258687979,"right_w0":0.6399941069113526,"right_w1":0.42000237071446133,"right_w2":4.262318668000344e-7,"left_torso_arm_mount":0.040000668403570624,"left_s0":-0.36999999941455586,"left_s1":0.6099924658184408,"left_e0":-2.389982559966586,"left_e1":0.5500085677184969,"left_w0":-3.0589999999999984,"left_w1":-1.150002672885464,"left_w2":0.08000000076466165},{"torso_t0":0.2100002432350614,"headpan":0.060000122232844406,"headnod":2.9869596167833634e-10,"display_joint":0.1999999999999999,"right_torso_arm_mount":9.53504085545216e-18,"right_s0":0.4699994538053781,"right_s1":0.45999058215954647,"right_e0":1.1099830479063008,"right_e1":1.100006258687979,"right_w0":0.6399941069113526,"right_w1":0.42000237071446133,"right_w2":4.262318668000344e-7,"left_torso_arm_mount":0.040000668403570624,"left_s0":-0.36999999941455586,"left_s1":0.6099924658184408,"left_e0":-2.559982559966582,"left_e1":1.1500085677184974,"left_w0":-3.0589999999999984,"left_w1":-1.150002672885464,"left_w2":0.08000000076466165}];
+        }
+        else if (robot.name === "sawyer") {
+            setpointArr = 
+            [{"pedestal_fixed":0,"right_j0":0,"head_pan":0,"right_j1":0,"right_j2":0,"right_j3":0,"right_j4":0,"right_j5":0,"right_j6":0},{"pedestal_fixed":-0.00011644626743445513,"right_j0":0.00045122928630851394,"head_pan":0.0005240082034550481,"right_j1":0.4004075619360208,"right_j2":1.6200000000000012,"right_j3":-1.2000000000000008,"right_j4":-1.5500000000000011,"right_j5":-0.8700000000000007,"right_j6":-0.7300000000000005},{"pedestal_fixed":-2.017688050437244e-9,"right_j0":7.818541195444324e-9,"head_pan":9.079596226967593e-9,"right_j1":-0.9399930620571123,"right_j2":-1.6199719299320314,"right_j3":1.0999792073570602,"right_j4":0.8199731428362024,"right_j5":-0.000015074666131900458,"right_j6":-0.000012648857788836016},{"pedestal_fixed":-1.4458250435451734e-11,"right_j0":5.602572043737552e-11,"head_pan":6.506212695953276e-11,"right_j1":-0.00005203576377006419,"right_j2":-0.00008956319361727226,"right_j3":1.5900608020979436,"right_j4":0.000045243817461451896,"right_j5":-1.0802130592913378e-7,"right_j6":-9.063856704398584e-8},{"pedestal_fixed":-1.4458250435451734e-11,"right_j0":5.602572043737552e-11,"head_pan":6.506212695953276e-11,"right_j1":-0.00005203576377006419,"right_j2":-0.00008956319361727226,"right_j3":-2.5499391979020473,"right_j4":0.000045243817461451896,"right_j5":-1.0802130592913378e-7,"right_j6":-9.063856704398584e-8},{"pedestal_fixed":-1.4458250435451734e-11,"right_j0":5.602572043737552e-11,"head_pan":6.506212695953276e-11,"right_j1":-0.00005203576377006419,"right_j2":1.6499104368063837,"right_j3":-2.5499391979020473,"right_j4":0.000045243817461451896,"right_j5":-1.0802130592913378e-7,"right_j6":-9.063856704398584e-8},{"pedestal_fixed":-1.4458250435451931e-11,"right_j0":5.6025720437376295e-11,"head_pan":-0.6899999999349383,"right_j1":-0.00005203576377006568,"right_j2":1.6499104368035144,"right_j3":-2.549939197902045,"right_j4":0.0000452438174614532,"right_j5":-1.0802130592913527e-7,"right_j6":-9.063856704398707e-8},{"pedestal_fixed":-1.4458250435451931e-11,"right_j0":5.6025720437376295e-11,"head_pan":0.5200000000650624,"right_j1":-0.00005203576377006568,"right_j2":1.6499104368035144,"right_j3":-2.549939197902045,"right_j4":0.0000452438174614532,"right_j5":-1.0802130592913527e-7,"right_j6":-9.063856704398707e-8},{"pedestal_fixed":-1.3390345451963714e-16,"right_j0":1.3700000000000014,"head_pan":-1.5299993717095974,"right_j1":-4.819233529317192e-10,"right_j2":0.000015280459286734806,"right_j3":-0.000023615974072277038,"right_j4":4.190205087947083e-10,"right_j5":-1.0004271326056643e-12,"right_j6":-8.394388583932589e-13},{"pedestal_fixed":-1.3390345451963714e-16,"right_j0":-0.59,"head_pan":0.9064,"right_j1":-4.819233529317192e-10,"right_j2":0.000015280459286734806,"right_j3":-0.000023615974072277038,"right_j4":4.190205087947083e-10,"right_j5":-1.0004271326056643e-12,"right_j6":-8.394388583932589e-13}];
+        }
+        */
+        else if (robot.name === "mr2") {
+            setpointArr = 
+            [{"clavicle_right_yaw":0,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":0.21000000000000005,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":0.5300000000000002,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":-0.25000000000000016,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":-0.5000000000000003,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":0,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":0,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":0,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":0,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0},{"clavicle_right_yaw":0,"shoulder_right_yaw":0,"upperarm_right_pitch":0,"forearm_right_yaw":0,"clavicle_left_roll":0}];
+        }
+        else{
+            setpointArr = kineval.setpoints;
+        }
+    }  
+
+    // STENCIL: implement FSM to cycle through dance pose setpoints
+    if (typeof sequence === "undefined") {
+        sequence = 0;
+    }
+
+    for (x in robot.joints) {
+        kineval.params.setpoint_target[x] = setpointArr[sequence][x];
+    }
+    var isdesired = [];
+    for (x in robot.joints) {
+        if (Math.abs(kineval.params.setpoint_target[x] - robot.joints[x].angle) < 0.001){
+                isdesired.push(1);
+        }
+    }
+    if (isdesired.length === Object.keys(robot.joints).length) {
+        sequence += 1;
+        if (sequence === setpointArr.length) {
+            sequence = 0;
+        }
+    }
+}
+
+kineval.setpointClockMovement = function execute_clock() {
+
+    // if update not requested, exit routine
+    if (!kineval.params.update_pd_clock) return; 
+
+    var curdate = new Date();
+    for (x in robot.joints) {
+        kineval.params.setpoint_target[x] = curdate.getSeconds()/60*2*Math.PI;
+    }
+}
+
+
+kineval.robotArmControllerSetpoint = function robot_pd_control () {
+
+    // if update not requested, exit routine
+    if ((!kineval.params.update_pd)&&(!kineval.params.persist_pd)) return; 
+
+    kineval.params.update_pd = false; // if update requested, clear request and process setpoint control
+
+    // STENCIL: implement P servo controller over joints
+    for (x in robot.joints) {
+        var angle_desired = kineval.params.setpoint_target[x];
+        robot.joints[x].control = robot.joints[x].servo.p_gain*(angle_desired - robot.joints[x].angle);
+    }
+}
+
+
